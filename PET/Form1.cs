@@ -14,9 +14,10 @@ namespace PET
     {
 
         public int i = 0;
-        public int Full = 100;
+        public int Full = 700;
         public int Eating = 0;
         public int Hour = 0;
+        public string Hunger = "Satisfied";
         public string Space = "Left";
         public string NextSpace = "Left";
 
@@ -36,29 +37,24 @@ namespace PET
             if (Space == "Left")
             {
                 BabyLeft();
-
                 NextSpace = "GoRight";
             }
 
             if (Space == "Right")
             {
                 BabyRight();
-
                 NextSpace = "GoLeft";
             }
 
             if (Space == "GoLeft")
             {
                 BabyMiddle();
-
                 NextSpace = "Left";
-
             }
 
             if (Space == "GoRight")
             {
                 BabyMiddle();
-
                 NextSpace = "Right";
             }
 
@@ -67,22 +63,20 @@ namespace PET
                if (Eating == 1)
                 {
                     BabyEat2();
-                    Eating--;
                 }
                 if (Eating == 2)
                 {
                     BabyEat1();
-                    Eating--;
                 }
                 if (Eating == 3)
                 {
                     BabyEat2();
-                    Eating--;
                 }
+                Eating--;
             }
 
 
-            if (Hour > 20 || Hour < 8)
+            if (Hour > 22 || Hour < 8)
             {
                 if (i % 2 == 0)
                 {
@@ -114,7 +108,47 @@ namespace PET
                 Egg4();
             }
 
-            if (Full < 1)
+            if (Full < 1000)
+            {
+                Hunger = "In A Food Coma!";
+            }
+            if (Full < 900)
+            {
+                Hunger = "Too Full";
+            }
+            if (Full < 800)
+            {
+                Hunger = "Very Full";
+            }
+            if (Full < 700)
+            {
+                Hunger = "Comfortable";
+            }
+            if (Full < 600)
+            {
+                Hunger = "Satisfied";
+            }
+            if (Full < 500)
+            {
+                Hunger = "Not That Hungry";
+            }
+            if (Full < 400)
+            {
+                Hunger = "A Little Hungry";
+            }
+            if (Full < 300)
+            {
+                Hunger = "Very Hungry";
+            }
+            if (Full < 200)
+            {
+                Hunger = "Uncomfortably Hungry";
+            }
+            if (Full < 100)
+            {
+                Hunger = "Starving!";
+            }
+            if (Full < 1 || Full > 1050)
             {
                 Dead();
                 return;
@@ -125,7 +159,7 @@ namespace PET
 
         public void Status()
         {
-            Display.Items.Add("Full: " + Full.ToString());
+            Display.Items.Add("Hunger: " + Hunger);
            // Display.Items.Add("Time: " + Hour.ToString());
         }
 
@@ -313,7 +347,7 @@ namespace PET
 
         private void Feed_Click(object sender, EventArgs e)
         {
-            Full += 5;
+            Full += 25;
             Eating = 3;
         }
     }
