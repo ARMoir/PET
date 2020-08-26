@@ -32,6 +32,7 @@
             this.Display = new System.Windows.Forms.ListBox();
             this.Time = new System.Windows.Forms.Timer(this.components);
             this.Feed = new System.Windows.Forms.Button();
+            this.Clean = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Display
@@ -60,11 +61,22 @@
             this.Feed.UseVisualStyleBackColor = true;
             this.Feed.Click += new System.EventHandler(this.Feed_Click);
             // 
+            // Clean
+            // 
+            this.Clean.Location = new System.Drawing.Point(128, 166);
+            this.Clean.Name = "Clean";
+            this.Clean.Size = new System.Drawing.Size(75, 23);
+            this.Clean.TabIndex = 2;
+            this.Clean.Text = "Clean";
+            this.Clean.UseVisualStyleBackColor = true;
+            this.Clean.Click += new System.EventHandler(this.Clean_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(215, 240);
+            this.Controls.Add(this.Clean);
             this.Controls.Add(this.Feed);
             this.Controls.Add(this.Display);
             this.Name = "Form1";
@@ -78,6 +90,7 @@
         private System.Windows.Forms.ListBox Display;
         private System.Windows.Forms.Timer Time;
         private System.Windows.Forms.Button Feed;
+        private System.Windows.Forms.Button Clean;
     }
 }
 

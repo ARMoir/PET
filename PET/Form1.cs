@@ -13,13 +13,17 @@ namespace PET
     public partial class Form1 : Form
     {
 
-        public int i = 0;
-        public int Full = 700;
+        public int Count = 0;
+        public int Full = 650;
         public int Eating = 0;
         public int Hour = 0;
+        public int Poop = 0;
+        public int ChanceCheck = 0;
+        public bool IsPoop = false;
         public string Hunger = "Satisfied";
         public string Space = "Left";
         public string NextSpace = "Left";
+        public Random Chance = new Random();
 
         public Form1()
         {
@@ -28,57 +32,91 @@ namespace PET
 
         private void Time_Tick(object sender, EventArgs e)
         {
-            i++;
+            Count++;
             Full--;
             Space = NextSpace;
-
+            ChanceCheck = Chance.Next(10);
             Hour = Int32.Parse(DateTime.Now.ToString("HH"));
 
-            if (Space == "Left")
+            switch (ChanceCheck)
             {
-                BabyLeft();
-                NextSpace = "GoRight";
+                case 0:
+                    Full--;
+                    break;
+
+                case 1:
+                    Full--;
+                    break;
+
+                case 2:
+                    Poop++;
+                    break;
+
+                case 3:
+                    Poop++;
+                    break;
             }
 
-            if (Space == "Right")
+            switch (Space)
             {
-                BabyRight();
-                NextSpace = "GoLeft";
+                case "Left":
+                    BabyLeft();
+                    NextSpace = "GoRight";
+                    break;
+
+                case "Right":
+                    BabyRight();
+                    NextSpace = "GoLeft";
+                    break;
+
+                case "GoLeft":
+                    BabyMiddle();
+                    NextSpace = "Left";
+                    break;
+
+                case "GoRight":
+                    BabyMiddle();
+                    NextSpace = "Right";
+                    break;
             }
 
-            if (Space == "GoLeft")
+            switch (Eating)
             {
-                BabyMiddle();
-                NextSpace = "Left";
-            }
-
-            if (Space == "GoRight")
-            {
-                BabyMiddle();
-                NextSpace = "Right";
-            }
-
-            if (Eating > 0)
-            {
-               if (Eating == 1)
-                {
+                case 1:
                     BabyEat2();
-                }
-                if (Eating == 2)
-                {
+                    Eating--;
+                    break;
+
+                case 2:
                     BabyEat1();
-                }
-                if (Eating == 3)
-                {
+                    Eating--;
+                    break;
+
+                case 3:
                     BabyEat2();
-                }
-                Eating--;
+                    Eating--;
+                    break;
             }
 
+            if(Poop > 10)
+            {
+                IsPoop = true;
+            }
+            if(IsPoop)
+            {
+                if (Count % 2 == 0)
+                {
+                    BabyPoop1();
+                }
+                else
+                {
+                    BabyPoop2();
+                }
+            }
 
             if (Hour > 22 || Hour < 8)
             {
-                if (i % 2 == 0)
+                if (Count % 2 == 0)
                 {
                     BabySleep1();
                 }
@@ -88,24 +126,23 @@ namespace PET
                 }
             }
 
-            if (i == 1)
+            switch (Count)
             {
-                Egg();
-            }
+                case 1:
+                    Egg();
+                    break;
 
-            if (i == 2)
-            {
-                Egg2();
-            }
+                case 2:
+                    Egg2();
+                    break;
 
-            if (i == 3)
-            {
-                Egg3();
-            }
+                case 3:
+                    Egg3();
+                    break;
 
-            if (i == 4)
-            {
-                Egg4();
+                case 4:
+                    Egg4();
+                    break;
             }
 
             if (Full < 1000)
@@ -207,6 +244,36 @@ namespace PET
             Display.Items.Add("           ■ ■■■■ ■           ");
             Display.Items.Add("");
             Display.Items.Add("");
+        }
+
+        public void BabyPoop1()
+        {
+            Display.Items.Clear();
+            Display.Items.Add("                              ");
+            Display.Items.Add("                              ");
+            Display.Items.Add("           ■ ■■■■ ■           ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("        ■  ■■    ■■  ■        ");
+            Display.Items.Add("        ■    ■■■■    ■        ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("           ■ ■■■■ ■       @ ! ");
+            Display.Items.Add("                        !@@@  ");
+            Display.Items.Add("                        @@@@@ ");
+        }
+
+        public void BabyPoop2()
+        {
+            Display.Items.Clear();
+            Display.Items.Add("                              ");
+            Display.Items.Add("                              ");
+            Display.Items.Add("           ■ ■■■■ ■           ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("        ■  ■■    ■■  ■        ");
+            Display.Items.Add("        ■    ■■■■    ■        ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("           ■ ■■■■ ■     ! @   ");
+            Display.Items.Add("                         @@@! ");
+            Display.Items.Add("                        @@@@@ ");
         }
 
         public void BabySleep1()
@@ -348,7 +415,14 @@ namespace PET
         private void Feed_Click(object sender, EventArgs e)
         {
             Full += 25;
+            Poop++;
             Eating = 3;
+        }
+
+        private void Clean_Click(object sender, EventArgs e)
+        {
+            Poop = 0;
+            IsPoop = false;
         }
     }
 }
