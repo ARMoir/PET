@@ -18,8 +18,8 @@ namespace PET
         public int Eating = 0;
         public int Hour = 0;
         public int Poop = 0;
+        public int Sick = 0;
         public int ChanceCheck = 0;
-        public bool IsPoop = false;
         public string Hunger = "Satisfied";
         public string Space = "Left";
         public string NextSpace = "Left";
@@ -54,6 +54,14 @@ namespace PET
 
                 case 3:
                     Poop++;
+                    break;
+
+                case 4:
+                    Sick++;
+                    break;
+
+                case 5:
+                    Sick++;
                     break;
             }
 
@@ -100,10 +108,6 @@ namespace PET
 
             if(Poop > 10)
             {
-                IsPoop = true;
-            }
-            if(IsPoop)
-            {
                 if (Count % 2 == 0)
                 {
                     BabyPoop1();
@@ -112,6 +116,32 @@ namespace PET
                 {
                     BabyPoop2();
                 }
+                Sick += 2;
+            }
+            if (Poop > 20)
+            {
+                if (Count % 2 == 0)
+                {
+                    Baby2Poop1();
+                }
+                else
+                {
+                    Baby2Poop2();
+                }
+                Sick += 4;
+            }
+
+            if (Sick > 100)
+            {
+                if (Count % 2 == 0)
+                {
+                    BabySick();
+                }
+                else
+                {
+                    BabySick2();
+                }
+                Full -= 25;
             }
 
             if (Hour > 22 || Hour < 8)
@@ -196,8 +226,10 @@ namespace PET
 
         public void Status()
         {
-            Display.Items.Add("Hunger: " + Hunger);
-           // Display.Items.Add("Time: " + Hour.ToString());
+            StatusBox.Items.Clear();
+            StatusBox.Items.Add("Hunger: " + Hunger);
+            StatusBox.Items.Add("Poop: " + Poop.ToString());
+            StatusBox.Items.Add("Sick: " + Sick.ToString());
         }
 
         public void BabyLeft()
@@ -246,6 +278,36 @@ namespace PET
             Display.Items.Add("");
         }
 
+        public void BabySick()
+        {
+            Display.Items.Clear();
+            Display.Items.Add("");
+            Display.Items.Add("");
+            Display.Items.Add("           ■ ■■■■ ■           ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("        ■  ■■■  ■■■  ■        ");
+            Display.Items.Add("        ■    ■■■■    ■        ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("           ■ ■■■■ ■           ");
+            Display.Items.Add("");
+            Display.Items.Add("");
+        }
+
+        public void BabySick2()
+        {
+            Display.Items.Clear();
+            Display.Items.Add("");
+            Display.Items.Add("");
+            Display.Items.Add("");
+            Display.Items.Add("           ■ ■■■■ ■           ");
+            Display.Items.Add("        ■  ■■■  ■■■  ■        ");
+            Display.Items.Add("        ■    ■■■■    ■        ");
+            Display.Items.Add("           ■ ■■■■ ■           ");
+            Display.Items.Add("");
+            Display.Items.Add("");
+            Display.Items.Add("");
+        }
+
         public void BabyPoop1()
         {
             Display.Items.Clear();
@@ -253,7 +315,7 @@ namespace PET
             Display.Items.Add("                              ");
             Display.Items.Add("           ■ ■■■■ ■           ");
             Display.Items.Add("         ■          ■         ");
-            Display.Items.Add("        ■  ■■    ■■  ■        ");
+            Display.Items.Add("        ■   ■■    ■■ ■        ");
             Display.Items.Add("        ■    ■■■■    ■        ");
             Display.Items.Add("         ■          ■         ");
             Display.Items.Add("           ■ ■■■■ ■       @ ! ");
@@ -268,7 +330,37 @@ namespace PET
             Display.Items.Add("                              ");
             Display.Items.Add("           ■ ■■■■ ■           ");
             Display.Items.Add("         ■          ■         ");
-            Display.Items.Add("        ■  ■■    ■■  ■        ");
+            Display.Items.Add("        ■ ■■    ■■   ■        ");
+            Display.Items.Add("        ■    ■■■■    ■        ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("           ■ ■■■■ ■     ! @   ");
+            Display.Items.Add("                         @@@! ");
+            Display.Items.Add("                        @@@@@ ");
+        }
+
+        public void Baby2Poop1()
+        {
+            Display.Items.Clear();
+            Display.Items.Add(" ! @                          ");
+            Display.Items.Add("  @@@!                        ");
+            Display.Items.Add(" @@@@@     ■ ■■■■ ■           ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("        ■ ■■    ■■   ■        ");
+            Display.Items.Add("        ■    ■■■■    ■        ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("           ■ ■■■■ ■       @ ! ");
+            Display.Items.Add("                        !@@@  ");
+            Display.Items.Add("                        @@@@@ ");
+        }
+
+        public void Baby2Poop2()
+        {
+            Display.Items.Clear();
+            Display.Items.Add("   @ !                        ");
+            Display.Items.Add(" !@@@                         ");
+            Display.Items.Add(" @@@@@     ■ ■■■■ ■           ");
+            Display.Items.Add("         ■          ■         ");
+            Display.Items.Add("        ■   ■■    ■■ ■        ");
             Display.Items.Add("        ■    ■■■■    ■        ");
             Display.Items.Add("         ■          ■         ");
             Display.Items.Add("           ■ ■■■■ ■     ! @   ");
@@ -414,7 +506,7 @@ namespace PET
 
         private void Feed_Click(object sender, EventArgs e)
         {
-            Full += 25;
+            Full += 50;
             Poop++;
             Eating = 3;
         }
@@ -422,7 +514,12 @@ namespace PET
         private void Clean_Click(object sender, EventArgs e)
         {
             Poop = 0;
-            IsPoop = false;
+            Sick -= 25;
+        }
+
+        private void Medicine_Click(object sender, EventArgs e)
+        {
+            Sick = 0;
         }
     }
 }
