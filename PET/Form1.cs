@@ -13,17 +13,18 @@ namespace PET
     public partial class Form1 : Form
     {
 
-        public int Count = 0;
-        public int Full = 650;
-        public int Eating = 0;
-        public int Hour = 0;
-        public int Poop = 0;
-        public int Sick = 0;
-        public int ChanceCheck = 0;
-        public string Hunger = "Satisfied";
-        public string Space = "Left";
-        public string NextSpace = "Left";
-        public Random Chance = new Random();
+        public int Count { get; set; } = 0;
+        public int Full { get; set; } = 650;
+        public int Eating { get; set; } = 0;
+        public int Hour { get; set; } = 0;
+        public int Poop { get; set; } = 0;
+        public int Sick { get; set; } = 0;
+        public int ChanceCheck { get; set; } = 0;
+        public string Hunger { get; set; } = "Satisfied";
+        public string Space { get; set; } = "Left";
+        public string NextSpace { get; set; } = "Left";
+        public string Stage { get; set; } = "Egg";
+        public Random Chance { get; set; } = new Random();
 
         public Form1()
         {
@@ -68,22 +69,22 @@ namespace PET
             switch (Space)
             {
                 case "Left":
-                    BabyLeft();
+                    MoveLeft();
                     NextSpace = "GoRight";
                     break;
 
                 case "Right":
-                    BabyRight();
+                    MoveRight();
                     NextSpace = "GoLeft";
                     break;
 
                 case "GoLeft":
-                    BabyMiddle();
+                    MoveMiddle();
                     NextSpace = "Left";
                     break;
 
                 case "GoRight":
-                    BabyMiddle();
+                    MoveMiddle();
                     NextSpace = "Right";
                     break;
             }
@@ -173,6 +174,14 @@ namespace PET
                 case 4:
                     Egg4();
                     break;
+
+                case 5:
+                    Stage = "Baby";
+                    break;
+
+                case 30:
+                    Stage = "Teen";
+                    break;
             }
 
             if (Full < 1000)
@@ -227,9 +236,52 @@ namespace PET
         public void Status()
         {
             StatusBox.Items.Clear();
-            StatusBox.Items.Add("Hunger: " + Hunger);
-            StatusBox.Items.Add("Poop: " + Poop.ToString());
-            StatusBox.Items.Add("Sick: " + Sick.ToString());
+            StatusBox.Items.Add($"Hunger: {Hunger}");
+            StatusBox.Items.Add($"Poop: {Poop}");
+            StatusBox.Items.Add($"Sick: {Sick}");
+            StatusBox.Items.Add($"Stage: {Stage}");
+        }
+
+        public void MoveLeft()
+        {
+            switch (Stage)
+            {
+                case "Baby":
+                    BabyLeft();
+                    break;
+
+                case "Teen":
+                    TeenLeft();
+                    break;
+            }
+        }
+
+        public void MoveRight()
+        {
+            switch (Stage)
+            {
+                case "Baby":
+                    BabyRight();
+                    break;
+
+                case "Teen":
+                    TeenRight();
+                    break;
+            }
+        }
+
+        public void MoveMiddle()
+        {
+            switch (Stage)
+            {
+                case "Baby":
+                    BabyMiddle();
+                    break;
+
+                case "Teen":
+                    TeenMiddle();
+                    break;
+            }
         }
 
         public void BabyLeft()
@@ -428,6 +480,51 @@ namespace PET
             Display.Items.Add("");
         }
 
+        public void TeenLeft()
+        {
+            Display.Items.Clear();
+            Display.Items.Add("    ■ ■■■■ ■■                 ");
+            Display.Items.Add("  ■           ■               ");
+            Display.Items.Add(" ■  ■       ■  ■              ");
+            Display.Items.Add(" ■    ■■■■■    ■              ");
+            Display.Items.Add("■■             ■■             ");
+            Display.Items.Add("  ■           ■               ");
+            Display.Items.Add("   ■    ■    ■                ");
+            Display.Items.Add("    ■  ■ ■  ■                 ");
+            Display.Items.Add("     ■     ■                  ");
+            Display.Items.Add("                              ");
+        }
+
+        public void TeenRight()
+        {
+            Display.Items.Clear();
+            Display.Items.Add("                 ■ ■■■■ ■■    ");
+            Display.Items.Add("               ■           ■  ");
+            Display.Items.Add("              ■  ■       ■  ■ ");
+            Display.Items.Add("              ■    ■■■■■    ■ ");
+            Display.Items.Add("             ■■             ■■");
+            Display.Items.Add("               ■           ■  ");
+            Display.Items.Add("                ■    ■    ■   ");
+            Display.Items.Add("                 ■  ■ ■  ■    ");
+            Display.Items.Add("                  ■     ■     ");
+            Display.Items.Add("                              ");
+        }
+
+        public void TeenMiddle()
+        {
+            Display.Items.Clear();
+            Display.Items.Add("                              ");
+            Display.Items.Add("           ■ ■■■■ ■■          ");
+            Display.Items.Add("         ■           ■        ");
+            Display.Items.Add("        ■  ■       ■  ■       ");
+            Display.Items.Add("        ■    ■■■■■    ■       ");
+            Display.Items.Add("       ■■             ■■      ");
+            Display.Items.Add("          ■    ■    ■         ");
+            Display.Items.Add("           ■  ■ ■  ■          ");
+            Display.Items.Add("            ■     ■           ");
+            Display.Items.Add("                              ");
+        }
+
         public void Egg()
         {
             Display.Items.Clear();
@@ -514,7 +611,7 @@ namespace PET
         private void Clean_Click(object sender, EventArgs e)
         {
             Poop = 0;
-            Sick -= 25;
+            Sick -= 5;
         }
 
         private void Medicine_Click(object sender, EventArgs e)
